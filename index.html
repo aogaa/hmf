@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Historiekviz — Holmestrand Museum</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="logos">
+      <img src="images/HMFLogo.png" alt="Holmestrand Museum">
+      <img src="images/BotneLogo.png" alt="Botne Historielag">
+    </div>
+    <div class="site-title">Holmestrand Museum<br>× Botne Historielag</div>
+  </header>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-bg">
+      <img src="images/2.png" alt="Holmestrand fra luften">
+      <img src="images/3.png" alt="Holmestrand feirer">
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1>Historiekviz</h1>
+      <p>Test kunnskapene dine om Holmestrands rike historie.<br>
+         Svar på quizene og vær med i trekningen av flotte premier!</p>
+    </div>
+  </div>
+
+  <!-- Premier -->
+  <section class="seksjon" id="premier">
+    <h2 class="seksjon-tittel">🏆 Premier</h2>
+    <div class="ornament">✦ ✦ ✦</div>
+    <div class="premier-grid" id="premier-grid">
+      <!-- Fylles inn av JavaScript fra content.js -->
+    </div>
+  </section>
+
+  <!-- Registrering -->
+  <section class="seksjon" id="registrering">
+    <div class="registrering-wrapper" id="registrering-panel">
+      <h2>Registrer deg</h2>
+      <p style="text-align:center;color:var(--grå);margin-bottom:1.5rem;font-size:.95rem;">
+        Registrer deg for å delta i quizen og trekningen av premier.
+      </p>
+      <div id="reg-feil" class="alert alert-feil" style="display:none;"></div>
+      <div class="form-group">
+        <label for="navn">Navn</label>
+        <input type="text" id="navn" placeholder="Ditt fulle navn" autocomplete="name" required>
+      </div>
+      <div class="form-group">
+        <label for="epost">E-post</label>
+        <input type="email" id="epost" placeholder="din@epost.no" autocomplete="email" required>
+      </div>
+      <div class="checkbox-group">
+        <input type="checkbox" id="samtykke">
+        <label for="samtykke">
+          Jeg ønsker å delta i trekningen av premier og godtar å motta nyhetsbrev fra
+          Holmestrand Museum. Vi lover å aldri selge eller dele din e-post med andre,
+          og du kan melde deg av når som helst.
+        </label>
+      </div>
+      <button class="btn btn-primær" id="reg-knapp">Start quiz</button>
+    </div>
+
+    <!-- Vist etter registrering -->
+    <div id="quiz-seksjon" style="display:none;">
+      <p class="quiz-ingress">Velkommen, <strong id="deltaker-navn"></strong>! Velg en quiz nedenfor.</p>
+      <p class="lodd-tekst">✦ For hver quiz du svarer på, får du ett lodd i trekningen ✦</p>
+      <div class="quiz-grid" id="quiz-grid"></div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2026 Holmestrand Museum &amp; Botne Historielag &nbsp;|&nbsp;
+       <a href="mailto:post@holmestrandmuseum.no">post@holmestrandmuseum.no</a></p>
+  </footer>
+
+  <script type="module">
+    import { premier as premierData } from './js/content.js';
+    import { registrerDeltaker, getParticipantId, hentDeltaker } from './js/auth.js';
+
+    const quizer = [
+      {
+        nr: 1, fil: 'quiz1.html',
+        tittel: 'Hva er gjenstanden?',
+        beskrivelse: 'Se på gjenstandene på bordet og gjett hva de heter. 8 gjenstander venter på deg.',
+        bilde: 'images/6.jpg',
+      },
+      {
+        nr: 2, fil: 'quiz2.html',
+        tittel: 'Ordenes betydning',
+        beskrivelse: 'Hva betyr disse gamle ordene og uttrykkene fra Holmestrands historie? 9 ord.',
+        bilde: 'images/8.jpg',
+      },
+      {
+        nr: 3, fil: 'quiz3.html',
+        tittel: 'Historiske spørsmål',
+        beskrivelse: 'Test kunnskapene dine med 5 spørsmål om Holmestrands og Botnes rike fortid.',
+        bilde: 'images/17.jpg',
+      },
+    ];
+
+    // Premier
+    const grid = document.getElementById('premier-grid');
+    premierData.forEach(p => {
+      grid.innerHTML += `
+        <div class="premie-kort">
+          <img src="${p.bilde}" alt="${p.tittel}">
+          <div class="premie-kort-body">
+            <h3>${p.tittel}</h3>
+            <p>${p.beskrivelse}</p>
+          </div>
+        </div>`;
+    });
+
+    async function visQuizSeksjon(participantId) {
+      const deltaker = await hentDeltaker(participantId);
+      const besvart = deltaker?.quizBesvart || [];
+
+      document.getElementById('registrering-panel').style.display = 'none';
+      document.getElementById('quiz-seksjon').style.display = 'block';
+      document.getElementById('deltaker-navn').textContent = deltaker?.name || '';
+
+      const quizGrid = document.getElementById('quiz-grid');
+      quizGrid.innerHTML = '';
+      quizer.forEach(q => {
+        const erBesvart = besvart.includes(`quiz${q.nr}`);
+        quizGrid.innerHTML += `
+          <a href="${q.fil}" class="quiz-kort${erBesvart ? ' besvart' : ''}">
+            <div class="quiz-kort-bg" style="background-image:url('${q.bilde}')"></div>
+            <div class="quiz-kort-overlay"></div>
+            <div class="quiz-kort-innhold">
+              <span class="quiz-kort-nummer">Quiz ${q.nr}</span>
+              <h3>${q.tittel}</h3>
+              <p>${q.beskrivelse}</p>
+              <span class="quiz-kort-knapp">${erBesvart ? '✓ Besvart' : 'Svar her →'}</span>
+            </div>
+          </a>`;
+      });
+    }
+
+    // Sjekk om allerede registrert
+    const eksisterendeId = getParticipantId();
+    if (eksisterendeId) {
+      visQuizSeksjon(eksisterendeId);
+    }
+
+    // Registreringsskjema
+    document.getElementById('reg-knapp').addEventListener('click', async () => {
+      const navn = document.getElementById('navn').value.trim();
+      const epost = document.getElementById('epost').value.trim();
+      const samtykke = document.getElementById('samtykke').checked;
+      const feilEl = document.getElementById('reg-feil');
+
+      feilEl.style.display = 'none';
+
+      if (!navn || !epost) {
+        feilEl.textContent = 'Fyll inn navn og e-post.';
+        feilEl.style.display = 'block';
+        return;
+      }
+      if (!samtykke) {
+        feilEl.textContent = 'Du må huke av samtykke-boksen for å delta.';
+        feilEl.style.display = 'block';
+        return;
+      }
+
+      const knapp = document.getElementById('reg-knapp');
+      knapp.disabled = true;
+      knapp.innerHTML = '<span class="spinner"></span> Registrerer…';
+
+      try {
+        const id = await registrerDeltaker(navn, epost, samtykke);
+        await visQuizSeksjon(id);
+        document.getElementById('quiz-seksjon').scrollIntoView({ behavior: 'smooth' });
+      } catch (e) {
+        feilEl.textContent = 'Noe gikk galt. Prøv igjen.';
+        feilEl.style.display = 'block';
+        knapp.disabled = false;
+        knapp.textContent = 'Start quiz';
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Historiekviz</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body { background: var(--cream); }
+    .admin-header { background: var(--mørk); color: var(--gull-lys); padding: 1rem 1.5rem; display:flex; justify-content:space-between; align-items:center; }
+    .admin-header h1 { font-size: 1.3rem; color: var(--gull-lys); }
+    #innlogging { display:none; }
+    #panel      { display:none; }
+  </style>
+</head>
+<body>
+
+  <div class="admin-header">
+    <h1>⚙ Admin — Historiekviz</h1>
+    <button class="btn btn-sekundær" id="logg-ut-knapp" style="display:none;padding:.4rem 1rem;font-size:.9rem;">Logg ut</button>
+  </div>
+
+  <!-- Innlogging -->
+  <div id="innlogging">
+    <div class="admin-login">
+      <h2 style="text-align:center;margin-bottom:1.5rem;">Logg inn</h2>
+      <div id="login-feil" class="alert alert-feil" style="display:none;"></div>
+      <div class="form-group">
+        <label for="admin-epost">E-post</label>
+        <input type="email" id="admin-epost" autocomplete="username">
+      </div>
+      <div class="form-group">
+        <label for="admin-passord">Passord</label>
+        <input type="password" id="admin-passord" autocomplete="current-password">
+      </div>
+      <button class="btn btn-primær" id="login-knapp">Logg inn</button>
+    </div>
+  </div>
+
+  <!-- Admin-panel -->
+  <div id="panel">
+    <div class="admin-wrapper">
+
+      <!-- Statistikk -->
+      <div class="stats-grid" id="stats-grid">
+        <div class="stat-kort"><div class="stat-tall" id="s-total">–</div><div class="stat-label">Deltakere</div></div>
+        <div class="stat-kort"><div class="stat-tall" id="s-q1">–</div><div class="stat-label">Quiz 1 besvart</div></div>
+        <div class="stat-kort"><div class="stat-tall" id="s-q2">–</div><div class="stat-label">Quiz 2 besvart</div></div>
+        <div class="stat-kort"><div class="stat-tall" id="s-q3">–</div><div class="stat-label">Quiz 3 besvart</div></div>
+      </div>
+
+      <!-- Faner -->
+      <div class="admin-tabs">
+        <button class="tab-btn aktiv" data-tab="svar">Svaroversikt</button>
+        <button class="tab-btn" data-tab="deltakere">Deltakerliste</button>
+        <button class="tab-btn" data-tab="trekning">Trekning</button>
+      </div>
+
+      <!-- Svaroversikt -->
+      <div class="tab-panel aktiv" id="tab-svar">
+        <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:1rem;align-items:center;">
+          <button class="btn btn-sekundær" id="vurder-knapp" style="padding:.5rem 1.2rem;">Vurder alle svar automatisk</button>
+          <button class="btn" id="eksport-knapp" style="background:var(--beige);border:2px solid var(--gull);padding:.5rem 1.2rem;">Eksporter CSV</button>
+          <label style="font-size:.9rem;color:var(--grå);">Filtrer quiz:
+            <select id="quiz-filter" style="margin-left:.4rem;padding:.3rem .6rem;border:1px solid #c4a882;border-radius:3px;background:#fffdf7;">
+              <option value="quiz1">Quiz 1 — Gjenstander</option>
+              <option value="quiz2">Quiz 2 — Ord</option>
+              <option value="quiz3">Quiz 3 — Spørsmål</option>
+            </select>
+          </label>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="svar-tabell" id="svar-tabell">
+            <thead id="svar-thead"></thead>
+            <tbody id="svar-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Deltakerliste -->
+      <div class="tab-panel" id="tab-deltakere">
+        <div style="overflow-x:auto;">
+          <table class="svar-tabell" id="deltaker-tabell">
+            <thead>
+              <tr>
+                <th>Navn</th><th>E-post</th><th>Registrert</th><th>Quiz 1</th><th>Quiz 2</th><th>Quiz 3</th><th>Lodd</th>
+              </tr>
+            </thead>
+            <tbody id="deltaker-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Trekning -->
+      <div class="tab-panel" id="tab-trekning">
+        <div class="trekning-panel">
+          <h2>Loddtrekning</h2>
+          <p style="color:var(--grå);margin-bottom:1.5rem;">Deltakere som har besvart flere quizer har flere lodd i kurven.</p>
+          <button class="btn btn-primær" id="trekk-knapp" style="max-width:260px;">🎰 Trekk vinner</button>
+          <div class="vinner-display" id="vinner-display">
+            <div style="font-size:.9rem;color:var(--gull);margin-bottom:.5rem;">🏆 VINNER</div>
+            <div id="vinner-navn"></div>
+            <div style="font-size:1rem;margin-top:.5rem;color:rgba(255,255,255,.7)" id="vinner-epost"></div>
+            <div style="font-size:.85rem;margin-top:.75rem;color:rgba(255,255,255,.5)" id="vinner-lodd"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script type="module">
+    import { settOppAuth, loggInn, loggUt, hentAllData, vurderAlleSvar, beregnStats, trekkVinner, eksporterCSV } from './js/admin.js';
+    import { quiz1, quiz2, quiz3 } from './js/content.js';
+
+    const quizConfig = {
+      quiz1: { label: 'Quiz 1', spørsmål: quiz1.map(q => `Gjenstand ${q.id}`) },
+      quiz2: { label: 'Quiz 2', spørsmål: quiz2.map(q => q.ord) },
+      quiz3: { label: 'Quiz 3', spørsmål: quiz3.map(q => q.spørsmål) },
+    };
+
+    let alleDeltakere = [];
+    let vurderinger = {};
+
+    settOppAuth(async () => {
+      document.getElementById('innlogging').style.display = 'none';
+      document.getElementById('panel').style.display = 'block';
+      document.getElementById('logg-ut-knapp').style.display = 'inline-block';
+      await lastData();
+    }, () => {
+      document.getElementById('innlogging').style.display = 'block';
+      document.getElementById('panel').style.display = 'none';
+      document.getElementById('logg-ut-knapp').style.display = 'none';
+    });
+
+    // Innlogging
+    document.getElementById('login-knapp').addEventListener('click', async () => {
+      const epost = document.getElementById('admin-epost').value;
+      const passord = document.getElementById('admin-passord').value;
+      const feilEl = document.getElementById('login-feil');
+      feilEl.style.display = 'none';
+      try {
+        await loggInn(epost, passord);
+      } catch {
+        feilEl.textContent = 'Feil e-post eller passord.';
+        feilEl.style.display = 'block';
+      }
+    });
+
+    document.getElementById('admin-passord').addEventListener('keydown', e => {
+      if (e.key === 'Enter') document.getElementById('login-knapp').click();
+    });
+
+    document.getElementById('logg-ut-knapp').addEventListener('click', () => loggUt());
+
+    // Faner
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('aktiv'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('aktiv'));
+        btn.classList.add('aktiv');
+        document.getElementById(`tab-${btn.dataset.tab}`).classList.add('aktiv');
+      });
+    });
+
+    // Data
+    async function lastData() {
+      alleDeltakere = await hentAllData();
+      const stats = beregnStats(alleDeltakere);
+      document.getElementById('s-total').textContent = stats.total;
+      document.getElementById('s-q1').textContent = stats.besvartQ1;
+      document.getElementById('s-q2').textContent = stats.besvartQ2;
+      document.getElementById('s-q3').textContent = stats.besvartQ3;
+
+      oppdaterDeltakerTabell();
+      oppdaterSvarTabell();
+    }
+
+    function oppdaterDeltakerTabell() {
+      const tbody = document.getElementById('deltaker-tbody');
+      tbody.innerHTML = '';
+      alleDeltakere.forEach(d => {
+        const lodd = Object.keys(d.svar || {}).length;
+        tbody.innerHTML += `<tr>
+          <td>${d.name}</td>
+          <td>${d.email}</td>
+          <td>${d.timestamp?.toDate?.().toLocaleString('no') || '–'}</td>
+          <td>${d.svar?.quiz1 ? '✓' : '–'}</td>
+          <td>${d.svar?.quiz2 ? '✓' : '–'}</td>
+          <td>${d.svar?.quiz3 ? '✓' : '–'}</td>
+          <td>${lodd}</td>
+        </tr>`;
+      });
+    }
+
+    function oppdaterSvarTabell() {
+      const quizKey = document.getElementById('quiz-filter').value;
+      const cfg = quizConfig[quizKey];
+      const thead = document.getElementById('svar-thead');
+      const tbody = document.getElementById('svar-tbody');
+
+      thead.innerHTML = `<tr><th>Navn</th>${cfg.spørsmål.map((s, i) =>
+        `<th title="${s}">Spm ${i+1}</th>`).join('')}</tr>`;
+
+      tbody.innerHTML = '';
+      alleDeltakere.filter(d => d.svar?.[quizKey]).forEach(d => {
+        const svarObj = d.svar[quizKey];
+        const vurd = vurderinger[d.id]?.[quizKey];
+        const celler = cfg.spørsmål.map((_, i) => {
+          const key = `q${i+1}`;
+          const svar = svarObj[key] || '';
+          if (vurd) {
+            const { status } = vurd[key] || {};
+            const cls = status === 'riktig' ? 'score-riktig' : status === 'nær' ? 'score-ukjent' : 'score-feil';
+            const ikon = status === 'riktig' ? '✓' : status === 'nær' ? '~' : '✗';
+            return `<td><span class="score-badge ${cls}">${ikon}</span> ${svar}</td>`;
+          }
+          return `<td>${svar}</td>`;
+        });
+        tbody.innerHTML += `<tr><td>${d.name}</td>${celler.join('')}</tr>`;
+      });
+    }
+
+    document.getElementById('quiz-filter').addEventListener('change', oppdaterSvarTabell);
+
+    // Vurdering
+    document.getElementById('vurder-knapp').addEventListener('click', () => {
+      alleDeltakere.forEach(d => {
+        vurderinger[d.id] = vurderAlleSvar(d);
+      });
+      oppdaterSvarTabell();
+    });
+
+    // Eksport
+    document.getElementById('eksport-knapp').addEventListener('click', () => eksporterCSV(alleDeltakere));
+
+    // Trekning
+    document.getElementById('trekk-knapp').addEventListener('click', () => {
+      const vinner = trekkVinner(alleDeltakere);
+      if (!vinner) { alert('Ingen deltakere ennå.'); return; }
+      const lodd = Object.keys(vinner.svar || {}).length;
+      document.getElementById('vinner-navn').textContent = vinner.name;
+      document.getElementById('vinner-epost').textContent = vinner.email;
+      document.getElementById('vinner-lodd').textContent = `${lodd} lodd i kurven`;
+      document.getElementById('vinner-display').classList.add('vis');
+    });
+  </script>
+</body>
+</html>

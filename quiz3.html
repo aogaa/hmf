@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz 3 – Historiske spørsmål | Historiekviz</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="logos">
+      <img src="images/HMFLogo.png" alt="Holmestrand Museum">
+      <img src="images/BotneLogo.png" alt="Botne Historielag">
+    </div>
+    <div class="site-title">Historiekviz</div>
+  </header>
+
+  <div class="quiz-header">
+    <div class="quiz-header-bg" style="background-image:url('images/17.jpg')"></div>
+    <h1>Quiz 3 — Historiske spørsmål</h1>
+    <p>Test kunnskapene dine med 5 spørsmål om Holmestrands og Botnes fortid.</p>
+  </div>
+
+  <div class="quiz-form-wrapper">
+    <a href="index.html" class="tilbake">← Tilbake til forsiden</a>
+
+    <div id="feil" class="alert alert-feil" style="display:none;"></div>
+
+    <form id="quiz-skjema">
+      <div id="svar-liste"></div>
+      <div class="send-knapp-wrapper">
+        <button type="submit" class="btn btn-primær" style="max-width:300px;">Send inn svar</button>
+      </div>
+    </form>
+
+    <div class="bekreftelse" id="bekreftelse">
+      <div class="bekreftelse-ikon">🎉</div>
+      <h2>Svar mottatt!</h2>
+      <p>Takk for at du deltok i Quiz 3. Du er nå med i trekningen med alle dine lodd!</p>
+      <div class="ornament">✦ ✦ ✦</div>
+      <a href="index.html" class="btn btn-sekundær" style="margin-top:1rem;">← Tilbake til forsiden</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2026 Holmestrand Museum &amp; Botne Historielag</p>
+  </footer>
+
+  <script type="module">
+    import { quiz3 } from './js/content.js';
+    import { krevRegistrering } from './js/auth.js';
+    import { sendInnSvar, sjekkOgVisStatus } from './js/quiz.js';
+
+    krevRegistrering();
+
+    const liste = document.getElementById('svar-liste');
+    quiz3.forEach(q => {
+      liste.innerHTML += `
+        <div class="svar-rad">
+          <span class="nr">${q.id}</span>
+          <span class="spørsmål-tekst">${q.spørsmål}</span>
+          <input type="text" name="q${q.id}" placeholder="Ditt svar…" autocomplete="off">
+        </div>`;
+    });
+
+    const skjema = document.getElementById('quiz-skjema');
+    const bekreftelse = document.getElementById('bekreftelse');
+
+    await sjekkOgVisStatus(3, skjema, bekreftelse);
+
+    skjema.addEventListener('submit', async e => {
+      e.preventDefault();
+      const feilEl = document.getElementById('feil');
+      feilEl.style.display = 'none';
+
+      const data = new FormData(skjema);
+      const svar = {};
+      quiz3.forEach(q => { svar[`q${q.id}`] = data.get(`q${q.id}`)?.trim() || ''; });
+
+      const knapp = skjema.querySelector('button[type="submit"]');
+      knapp.disabled = true;
+      knapp.innerHTML = '<span class="spinner"></span> Sender…';
+
+      try {
+        const res = await sendInnSvar(3, svar);
+        if (res?.duplikat) { skjema.style.display = 'none'; bekreftelse.classList.add('vis'); return; }
+        skjema.style.display = 'none';
+        bekreftelse.classList.add('vis');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } catch {
+        feilEl.textContent = 'Noe gikk galt. Prøv igjen.';
+        feilEl.style.display = 'block';
+        knapp.disabled = false;
+        knapp.textContent = 'Send inn svar';
+      }
+    });
+  </script>
+</body>
+</html>
