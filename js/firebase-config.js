@@ -9,12 +9,13 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebas
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "DIN_API_KEY",
-  authDomain: "DITT_PROSJEKT.firebaseapp.com",
-  projectId: "DITT_PROSJEKT_ID",
-  storageBucket: "DITT_PROSJEKT.appspot.com",
-  messagingSenderId: "DIN_SENDER_ID",
-  appId: "DIN_APP_ID",
+  apiKey: "AIzaSyAWMCTWr4q6Ubbc-BrcUNDoDkA_71a7dLY",
+  authDomain: "hmf13-8ffd7.firebaseapp.com",
+  projectId: "hmf13-8ffd7",
+  storageBucket: "hmf13-8ffd7.firebasestorage.app",
+  messagingSenderId: "483744142256",
+  appId: "1:483744142256:web:07fa3b2b985d1e79b87c75",
+  measurementId: "G-C4C4MXFXF5",
 };
 
 let app, db, auth;
