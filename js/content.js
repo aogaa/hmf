@@ -40,12 +40,12 @@ export const quiz3 = [
 
 // Premier som vises på forsiden (trekkes tilfeldig — ingen rangering)
 export const premier = [
-  { tittel: "Kaffekrus med Holmestrand byvåpen", beskrivelse: "", bilde: "images/10.jpg" },
-  { tittel: "Handlenett med byvåpen", beskrivelse: "", bilde: "images/9.jpg" },
+  { tittel: "Kaffekrus med Holmestrand byvåpen", beskrivelse: "", bilde: "images/p2.png" },
+  { tittel: "Handlenett med byvåpen", beskrivelse: "", bilde: "images/p1.png" },
   { tittel: "Gratis inngang på Holmestrand Museum", beskrivelse: "", bilde: "images/4.jpg" },
   { tittel: "Et års medlemskap i Botne Historielag", beskrivelse: "", bilde: "images/6.jpg" },
   { tittel: "Et års medlemskap i Holmestrand Museumsforening", beskrivelse: "", bilde: "images/11.jpg" },
-  { tittel: "Boken «Holmestrand 250 år»", beskrivelse: "", bilde: "images/13.jpg" },
-  { tittel: "Årets Botnar", beskrivelse: "", bilde: "images/14.jpg" },
+  { tittel: "Boken «Holmestrand 250 år»", beskrivelse: "", bilde: "images/p4.png" },
+  { tittel: "Årets Botnar", beskrivelse: "", bilde: "images/p3.png" },
   { tittel: "Jubileumstallerken «Holmestrand 250 år»", beskrivelse: "", bilde: "images/16.jpg" },
 ];
