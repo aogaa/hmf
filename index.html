@@ -180,7 +180,8 @@
         await visQuizSeksjon(id);
         document.getElementById('quiz-seksjon').scrollIntoView({ behavior: 'smooth' });
       } catch (e) {
-        feilEl.textContent = 'Noe gikk galt. Prøv igjen.';
+        console.error('Registrering feilet:', e);
+        feilEl.textContent = 'Noe gikk galt: ' + (e?.code || e?.message || e);
         feilEl.style.display = 'block';
         knapp.disabled = false;
         knapp.textContent = 'Start quiz';
