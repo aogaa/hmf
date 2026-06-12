@@ -95,7 +95,7 @@
       <div class="tab-panel" id="tab-trekning">
         <div class="trekning-panel">
           <h2>Loddtrekning</h2>
-          <p style="color:var(--grå);margin-bottom:1.5rem;">Deltakere som har besvart flere quizer har flere lodd i kurven.</p>
+          <p style="color:var(--grå);margin-bottom:1.5rem;">Hvert riktige svar gir ett lodd — jo flere riktige, jo større vinnersjanse. Svarene vurderes automatisk før trekningen. Tips: se over de gule (usikre) Quiz 2-svarene under «Svaroversikt» først.</p>
           <button class="btn btn-primær" id="trekk-knapp" style="max-width:260px;">🎰 Trekk vinner</button>
           <div class="vinner-display" id="vinner-display">
             <div style="font-size:.9rem;color:var(--gull);margin-bottom:.5rem;">🏆 VINNER</div>
@@ -110,7 +110,7 @@
   </div>
 
   <script type="module">
-    import { settOppAuth, loggInn, loggUt, hentAllData, vurderAlleSvar, beregnStats, trekkVinner, eksporterCSV } from './js/admin.js';
+    import { settOppAuth, loggInn, loggUt, hentAllData, vurderAlleSvar, beregnStats, trekkVinner, tellRiktige, eksporterCSV } from './js/admin.js';
     import { quiz1, quiz2, quiz3 } from './js/content.js';
 
     const quizConfig = {
@@ -234,14 +234,21 @@
     // Eksport
     document.getElementById('eksport-knapp').addEventListener('click', () => eksporterCSV(alleDeltakere));
 
-    // Trekning
+    // Trekning — vektet etter antall riktige svar (ett lodd per riktig svar)
     document.getElementById('trekk-knapp').addEventListener('click', () => {
-      const vinner = trekkVinner(alleDeltakere);
-      if (!vinner) { alert('Ingen deltakere ennå.'); return; }
-      const lodd = Object.keys(vinner.svar || {}).length;
+      // Sørg for at svarene er vurdert først
+      if (Object.keys(vurderinger).length === 0) {
+        alleDeltakere.forEach(d => { vurderinger[d.id] = vurderAlleSvar(d); });
+        oppdaterSvarTabell();
+      }
+
+      const vinner = trekkVinner(alleDeltakere, vurderinger);
+      if (!vinner) { alert('Ingen kvalifiserte deltakere ennå (ingen riktige svar).'); return; }
+
+      const lodd = tellRiktige(vurderinger[vinner.id]);
       document.getElementById('vinner-navn').textContent = vinner.name;
       document.getElementById('vinner-epost').textContent = vinner.email;
-      document.getElementById('vinner-lodd').textContent = `${lodd} lodd i kurven`;
+      document.getElementById('vinner-lodd').textContent = `${lodd} riktige svar = ${lodd} lodd`;
       document.getElementById('vinner-display').classList.add('vis');
     });
   </script>

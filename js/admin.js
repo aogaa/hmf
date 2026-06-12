@@ -108,11 +108,24 @@ export function beregnStats(deltakere) {
 }
 
 // ── Loddtrekning ──────────────────────────────────────────────
-export function trekkVinner(deltakere) {
+// Teller antall riktige svar for én deltaker basert på vurderingen.
+export function tellRiktige(vurdering) {
+  let antall = 0;
+  for (const quiz of Object.values(vurdering || {})) {
+    for (const felt of Object.values(quiz)) {
+      if (felt.status === 'riktig') antall++;
+    }
+  }
+  return antall;
+}
+
+// Trekker vinner vektet etter antall RIKTIGE svar (ett lodd per riktig svar).
+// vurderinger: { [participantId]: vurderAlleSvar(deltaker) }
+export function trekkVinner(deltakere, vurderinger) {
   const loddkurv = [];
   deltakere.forEach(d => {
-    const antall = Object.keys(d.svar || {}).length;
-    for (let i = 0; i < antall; i++) loddkurv.push(d);
+    const riktige = tellRiktige(vurderinger?.[d.id]);
+    for (let i = 0; i < riktige; i++) loddkurv.push(d);
   });
   if (loddkurv.length === 0) return null;
   return loddkurv[Math.floor(Math.random() * loddkurv.length)];

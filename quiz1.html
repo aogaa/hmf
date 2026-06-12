@@ -39,9 +39,9 @@
     <div class="bekreftelse" id="bekreftelse">
       <div class="bekreftelse-ikon">🎉</div>
       <h2>Svar mottatt!</h2>
-      <p>Takk for at du deltok i Quiz 1. Du har nå fått ett lodd i trekningen.</p>
+      <p>Takk for at du deltok i Quiz 1.</p>
       <div class="ornament">✦ ✦ ✦</div>
-      <a href="index.html" class="btn btn-sekundær" style="margin-top:1rem;">← Tilbake til forsiden</a>
+      <div id="neste-valg" class="neste-valg"></div>
     </div>
   </div>
 
@@ -52,7 +52,7 @@
   <script type="module">
     import { quiz1 } from './js/content.js';
     import { krevRegistrering } from './js/auth.js';
-    import { sendInnSvar, sjekkOgVisStatus } from './js/quiz.js';
+    import { sendInnSvar, sjekkOgVisStatus, visNesteQuizValg } from './js/quiz.js';
 
     krevRegistrering();
 
@@ -91,13 +91,9 @@
 
       try {
         const res = await sendInnSvar(1, svar);
-        if (res?.duplikat) {
-          skjema.style.display = 'none';
-          bekreftelse.classList.add('vis');
-          return;
-        }
         skjema.style.display = 'none';
         bekreftelse.classList.add('vis');
+        await visNesteQuizValg(1);
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } catch (err) {
         feilEl.textContent = 'Noe gikk galt. Prøv igjen.';

@@ -2,6 +2,13 @@
 // FYLL INN INNHOLD HER FØR ARRANGEMENTET
 // =============================================================
 
+// Felles metadata for alle quizene (brukes til "velg neste quiz")
+export const quizMeta = [
+  { nr: 1, fil: "quiz1.html", tittel: "Hva er gjenstanden?" },
+  { nr: 2, fil: "quiz2.html", tittel: "Ordenes betydning" },
+  { nr: 3, fil: "quiz3.html", tittel: "Historiske spørsmål" },
+];
+
 // Quiz 1 — Gamle gjenstander (flervalg a/b/c)
 // Deltakerne ser på den nummererte gjenstanden på bordet og velger riktig alternativ.
 export const quiz1 = [
