@@ -38,9 +38,9 @@
       Blant alle som deltar trekker vi heldige vinnere. Jo flere quizer du svarer på, jo flere lodd!
     </p>
     <div class="ornament">✦ ✦ ✦</div>
-    <div class="premier-grid" id="premier-grid">
+    <ul class="premier-liste" id="premier-grid">
       <!-- Fylles inn av JavaScript fra content.js -->
-    </div>
+    </ul>
   </section>
 
   <!-- Registrering -->
@@ -113,13 +113,10 @@
     const grid = document.getElementById('premier-grid');
     premierData.forEach(p => {
       grid.innerHTML += `
-        <div class="premie-kort">
-          <img src="${p.bilde}" alt="${p.tittel}">
-          <div class="premie-kort-body">
-            <h3>${p.tittel}</h3>
-            <p>${p.beskrivelse}</p>
-          </div>
-        </div>`;
+        <li class="premie-rad">
+          <img class="premie-thumb" src="${p.bilde}" alt="${p.tittel}">
+          <span class="premie-navn">${p.tittel}</span>
+        </li>`;
     });
 
     async function visQuizSeksjon(participantId) {

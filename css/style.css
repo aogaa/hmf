@@ -137,33 +137,43 @@ a { color: var(--brun); }
   margin-bottom: .25rem;
 }
 
-/* ── Premier-grid ─────────────────────────────────────────── */
-.premier-grid {
+/* ── Premier-liste (runde bilder) ─────────────────────────── */
+.premier-liste {
+  list-style: none;
+  max-width: 520px;
+  margin: 2rem auto 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.5rem;
-  margin-top: 2rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: .6rem 1.5rem;
 }
 
-.premie-kort {
-  background: var(--beige);
-  border: 2px solid var(--gull);
-  border-radius: 6px;
-  overflow: hidden;
-  text-align: center;
-  box-shadow: 0 3px 12px rgba(44,26,14,.12);
+.premie-rad {
+  display: flex;
+  align-items: center;
+  gap: .9rem;
+  padding: .4rem;
 }
 
-.premie-kort img {
-  width: 100%;
-  height: 160px;
+.premie-thumb {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
   object-fit: cover;
-  filter: sepia(15%);
+  background: #fff;
+  border: 2px solid var(--gull);
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(44,26,14,.15);
 }
 
-.premie-kort-body { padding: 1rem; }
-.premie-kort-body h3 { color: var(--brun); margin-bottom: .4rem; }
-.premie-kort-body p  { font-size: .9rem; color: var(--grå); margin: 0; }
+.premie-navn {
+  font-size: .9rem;
+  color: var(--tekst);
+  line-height: 1.3;
+}
+
+@media (max-width: 560px) {
+  .premier-liste { grid-template-columns: 1fr; max-width: 360px; }
+}
 
 /* ── Registreringsskjema ──────────────────────────────────── */
 .registrering-wrapper {
