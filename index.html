@@ -86,7 +86,7 @@
 
   <script type="module">
     import { premier as premierData } from './js/content.js';
-    import { registrerDeltaker, getParticipantId, hentDeltaker } from './js/auth.js';
+    import { registrerDeltaker, getParticipantId, hentDeltaker, fjernParticipantId } from './js/auth.js';
 
     const quizer = [
       {
@@ -121,6 +121,16 @@
 
     async function visQuizSeksjon(participantId) {
       const deltaker = await hentDeltaker(participantId);
+
+      // Hvis deltakeren ikke lenger finnes i Firebase (f.eks. slettet),
+      // nullstill den lagrede ID-en og vis registreringsskjemaet på nytt.
+      if (!deltaker) {
+        fjernParticipantId();
+        document.getElementById('registrering-panel').style.display = 'block';
+        document.getElementById('quiz-seksjon').style.display = 'none';
+        return;
+      }
+
       const besvart = deltaker?.quizBesvart || [];
 
       document.getElementById('registrering-panel').style.display = 'none';
@@ -143,12 +153,6 @@
             </div>
           </a>`;
       });
-    }
-
-    // Sjekk om allerede registrert
-    const eksisterendeId = getParticipantId();
-    if (eksisterendeId) {
-      visQuizSeksjon(eksisterendeId);
     }
 
     // Registreringsskjema

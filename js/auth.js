@@ -11,6 +11,10 @@ export function setParticipantId(id) {
   localStorage.setItem(STORAGE_KEY, id);
 }
 
+export function fjernParticipantId() {
+  localStorage.removeItem(STORAGE_KEY);
+}
+
 export async function registrerDeltaker(navn, epost, samtykke) {
   const docRef = await addDoc(collection(db, 'participants'), {
     name: navn.trim(),

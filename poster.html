@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plakat – Holmestrand Museum Quiz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #ccc;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px;
+      font-family: 'Lato', sans-serif;
+    }
+
+    /* A4: 210mm × 297mm — at 96dpi screen preview */
+    .poster {
+      width: 794px;
+      min-height: 1123px;
+      background: #f5efe0;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.35);
+    }
+
+
+    /* ── Hero-bilde øverst ── */
+    .hero {
+      width: 100%;
+      height: 320px;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 30%;
+      display: block;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(44,26,14,0.30) 0%,
+        rgba(44,26,14,0.55) 60%,
+        rgba(44,26,14,0.82) 100%
+      );
+    }
+
+    /* ── Logoer i hero ── */
+    .logos {
+      position: absolute;
+      top: 36px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+      z-index: 5;
+    }
+    .logos img {
+      height: 64px;
+      width: auto;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.6));
+    }
+
+    /* ── Tittel i hero ── */
+    .hero-text {
+      position: absolute;
+      bottom: 28px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      z-index: 5;
+      padding: 0 40px;
+    }
+    .hero-text .tagline {
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      font-size: 13px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: #d4a853;
+      margin-bottom: 8px;
+    }
+    .hero-text h1 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 52px;
+      color: #ffffff;
+      line-height: 1.1;
+      text-shadow: 0 3px 12px rgba(0,0,0,0.5);
+      margin-bottom: 6px;
+    }
+    .hero-text .subtitle {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 20px;
+      color: #f0d9a8;
+    }
+
+    /* ── Brødtekst-seksjon ── */
+    .body-section {
+      flex: 1;
+      padding: 36px 60px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .ingress {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      color: #2c1a0e;
+      text-align: center;
+      line-height: 1.65;
+      max-width: 580px;
+      margin-bottom: 30px;
+    }
+
+    /* ── Tre quiz-bobler ── */
+    .quiz-grid {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      margin-bottom: 34px;
+      width: 100%;
+    }
+    .quiz-card {
+      flex: 1;
+      background: white;
+      border: 1.5px solid #d4a853;
+      border-radius: 6px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .quiz-card-img {
+      width: 100%;
+      height: 100px;
+      object-fit: cover;
+    }
+    .quiz-card-body {
+      padding: 10px 14px 12px;
+    }
+    .quiz-card-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #8b5e3c;
+      margin-bottom: 3px;
+    }
+    .quiz-card-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 14px;
+      color: #2c1a0e;
+      line-height: 1.3;
+    }
+
+    /* ── Separator ── */
+    .ornament {
+      text-align: center;
+      color: #d4a853;
+      font-size: 22px;
+      letter-spacing: 12px;
+      margin-bottom: 28px;
+    }
+
+    /* ── QR + CTA-boks ── */
+    .cta-box {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      background: #2c1a0e;
+      border-radius: 10px;
+      padding: 28px 36px;
+      width: 100%;
+      max-width: 620px;
+      margin-bottom: 28px;
+    }
+    #qrcode {
+      flex-shrink: 0;
+      background: white;
+      padding: 10px;
+      border-radius: 6px;
+      border: 2px solid #d4a853;
+    }
+    #qrcode canvas, #qrcode img {
+      display: block;
+    }
+    .cta-text {
+      color: #f5efe0;
+    }
+    .cta-text .scan-label {
+      font-family: 'Lato', sans-serif;
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #d4a853;
+      margin-bottom: 8px;
+    }
+    .cta-text h2 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 28px;
+      line-height: 1.15;
+      margin-bottom: 10px;
+      color: #ffffff;
+    }
+    .cta-text p {
+      font-size: 13.5px;
+      line-height: 1.55;
+      color: #d4c4a8;
+      margin-bottom: 12px;
+    }
+    .url-pill {
+      display: inline-block;
+      background: #d4a853;
+      color: #2c1a0e;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 12.5px;
+      letter-spacing: 1px;
+      padding: 5px 14px;
+      border-radius: 20px;
+    }
+
+    /* ── Bunntekst ── */
+    .footer {
+      padding: 0 60px 36px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .footer-left {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      color: #8b5e3c;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .footer-right {
+      font-family: 'Lato', sans-serif;
+      font-size: 11px;
+      color: #8b5e3c;
+      text-align: right;
+      line-height: 1.6;
+    }
+    .date-badge {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: #8b5e3c;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    /* ── Corner ornaments ── */
+    .corner {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      z-index: 11;
+    }
+    .corner svg { width: 100%; height: 100%; }
+    .corner-tl { top: 28px; left: 28px; }
+    .corner-tr { top: 28px; right: 28px; transform: scaleX(-1); }
+    .corner-bl { bottom: 28px; left: 28px; transform: scaleY(-1); }
+    .corner-br { bottom: 28px; right: 28px; transform: scale(-1); }
+
+    /* ── Print ── */
+    @media print {
+      body { background: none; padding: 0; }
+      .poster {
+        width: 210mm;
+        min-height: 297mm;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="poster">
+
+  <!-- Hero med bilde -->
+  <div class="hero">
+    <img src="images/2.png" alt="Holmestrand">
+    <div class="hero-overlay"></div>
+
+    <div class="logos">
+      <img src="images/HMFLogo.png" alt="Holmestrand Museum">
+      <img src="images/BotneLogo.png" alt="Botne Historielag">
+    </div>
+
+    <div class="hero-text">
+      <div class="tagline">Holmestrand Museum &amp; Botne Historielag</div>
+      <h1>Historisk<br>Quiz</h1>
+      <div class="subtitle">Kan du svare på disse spørsmålene?</div>
+    </div>
+  </div>
+
+  <!-- Brødtekst -->
+  <div class="body-section">
+
+    <p class="ingress">
+      Test kunnskapen din om Holmestrand og Botnes historie!
+      Svar på tre spennende quizer og vinn flotte premier.
+    </p>
+
+    <!-- Quiz-kort -->
+    <div class="quiz-grid">
+      <div class="quiz-card">
+        <img class="quiz-card-img" src="images/6.jpg" alt="Quiz 1">
+        <div class="quiz-card-body">
+          <div class="quiz-card-num">Quiz 1</div>
+          <div class="quiz-card-title">Hva er gjenstanden?</div>
+        </div>
+      </div>
+      <div class="quiz-card">
+        <img class="quiz-card-img" src="images/8.jpg" alt="Quiz 2">
+        <div class="quiz-card-body">
+          <div class="quiz-card-num">Quiz 2</div>
+          <div class="quiz-card-title">Ordenes betydning</div>
+        </div>
+      </div>
+      <div class="quiz-card">
+        <img class="quiz-card-img" src="images/17.jpg" alt="Quiz 3">
+        <div class="quiz-card-body">
+          <div class="quiz-card-num">Quiz 3</div>
+          <div class="quiz-card-title">Historiske spørsmål</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ornament">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+    <!-- QR-boks -->
+    <div class="cta-box">
+      <div id="qrcode"></div>
+      <div class="cta-text">
+        <div class="scan-label">Slik deltar du</div>
+        <h2>Scan QR-koden<br>og delta nå!</h2>
+        <p>Registrer deg, svar på quizene og vær med i trekning av fine premier. Jo flere quizer du svarer på, desto flere lodd får du!</p>
+        <span class="url-pill">quiz.holmestrandmuseum.no</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bunntekst -->
+  <div class="footer">
+    <div class="footer-left">
+      Holmestrand Museum<br>
+      Botne Historielag
+    </div>
+    <div class="footer-right">
+      <span class="date-badge">13. juni 2026</span>
+      Gratis å delta · Mobiltelefon
+    </div>
+  </div>
+
+</div>
+
+<script>
+  new QRCode(document.getElementById("qrcode"), {
+    text: "https://quiz.holmestrandmuseum.no",
+    width: 140,
+    height: 140,
+    colorDark: "#2c1a0e",
+    colorLight: "#ffffff",
+    correctLevel: QRCode.CorrectLevel.H
+  });
+</script>
+
+</body>
+</html>
