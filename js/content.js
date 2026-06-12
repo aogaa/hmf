@@ -38,21 +38,14 @@ export const quiz3 = [
   { id: 6, spørsmål: "Hva er navnet på den planlagte nye videregående skolen i Holmestrand?", fasit: "Harriet Backer VGS" },
 ];
 
-// Premier som vises på forsiden
+// Premier som vises på forsiden (trekkes tilfeldig — ingen rangering)
 export const premier = [
-  {
-    tittel: "1. premie",
-    beskrivelse: "BESKRIV PREMIEN HER",
-    bilde: "images/4.jpg",
-  },
-  {
-    tittel: "2. premie",
-    beskrivelse: "BESKRIV PREMIEN HER",
-    bilde: "images/4.jpg",
-  },
-  {
-    tittel: "3. premie",
-    beskrivelse: "BESKRIV PREMIEN HER",
-    bilde: "images/4.jpg",
-  },
+  { tittel: "Kaffekrus med Holmestrand byvåpen", beskrivelse: "", bilde: "images/10.jpg" },
+  { tittel: "Handlenett med byvåpen", beskrivelse: "", bilde: "images/9.jpg" },
+  { tittel: "Gratis inngang på Holmestrand Museum", beskrivelse: "", bilde: "images/4.jpg" },
+  { tittel: "Et års medlemskap i Botne Historielag", beskrivelse: "", bilde: "images/6.jpg" },
+  { tittel: "Et års medlemskap i Holmestrand Museumsforening", beskrivelse: "", bilde: "images/11.jpg" },
+  { tittel: "Boken «Holmestrand 250 år»", beskrivelse: "", bilde: "images/13.jpg" },
+  { tittel: "Årets Botnar", beskrivelse: "", bilde: "images/14.jpg" },
+  { tittel: "Jubileumstallerken «Holmestrand 250 år»", beskrivelse: "", bilde: "images/16.jpg" },
 ];
