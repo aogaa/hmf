@@ -89,7 +89,8 @@ a { color: var(--brun); }
   position: relative;
   min-height: 320px;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
 }
 
