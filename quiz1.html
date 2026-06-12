@@ -19,7 +19,7 @@
   <div class="quiz-header">
     <div class="quiz-header-bg" style="background-image:url('images/6.jpg')"></div>
     <h1>Quiz 1 — Hva er gjenstanden?</h1>
-    <p>Se på gjenstandene på bordet og skriv inn hva du tror de er.</p>
+    <p>Se på den nummererte gjenstanden på bordet og velg hva du tror det er.</p>
   </div>
 
   <div class="quiz-form-wrapper">
@@ -58,10 +58,16 @@
 
     const liste = document.getElementById('svar-liste');
     quiz1.forEach(q => {
+      const alternativer = Object.entries(q.alternativer).map(([bokstav, tekst]) => `
+        <label class="mc-alternativ">
+          <input type="radio" name="q${q.id}" value="${bokstav}">
+          <span class="mc-bokstav">${bokstav}</span>
+          <span class="mc-tekst">${tekst}</span>
+        </label>`).join('');
       liste.innerHTML += `
-        <div class="svar-rad quiz1-rad">
-          <span class="nr">${q.id}</span>
-          <input type="text" name="q${q.id}" placeholder="Hva er dette?" autocomplete="off">
+        <div class="mc-rad">
+          <div class="mc-spørsmål"><span class="nr">${q.id}</span> ${q.spørsmål}</div>
+          <div class="mc-alternativer">${alternativer}</div>
         </div>`;
     });
 

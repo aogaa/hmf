@@ -2,17 +2,17 @@
 // FYLL INN INNHOLD HER FØR ARRANGEMENTET
 // =============================================================
 
-// Quiz 1 — Hva er gjenstanden? (8 gjenstander på bordet)
-// Deltakerne ser på fysiske gjenstander og gjetter. Kun fasit trengs her.
+// Quiz 1 — Gamle gjenstander (flervalg a/b/c)
+// Deltakerne ser på den nummererte gjenstanden på bordet og velger riktig alternativ.
 export const quiz1 = [
-  { id: 1, fasit: "GJENSTAND_1" },
-  { id: 2, fasit: "GJENSTAND_2" },
-  { id: 3, fasit: "GJENSTAND_3" },
-  { id: 4, fasit: "GJENSTAND_4" },
-  { id: 5, fasit: "GJENSTAND_5" },
-  { id: 6, fasit: "GJENSTAND_6" },
-  { id: 7, fasit: "GJENSTAND_7" },
-  { id: 8, fasit: "GJENSTAND_8" },
+  { id: 1, spørsmål: "Er dette:", alternativer: { a: "heklenål", b: "hakkepinne", c: "hjelper til å træ knappestøvler" }, fasit: "c" },
+  { id: 2, spørsmål: "Er dette:", alternativer: { a: "bordpynt", b: "eske til å romme en sardinboks", c: "smørskål" }, fasit: "b" },
+  { id: 3, spørsmål: "Hva er dette?", alternativer: { a: "etui", b: "til å væte frimerker", c: "stempelpute" }, fasit: "c" },
+  { id: 4, spørsmål: "Er dette?", alternativer: { a: "lodd til et ur", b: "granat", c: "pynt" }, fasit: "a" },
+  { id: 5, spørsmål: "Hva er dette?", alternativer: { a: "redskap for et trykkeri", b: "redskap for baking", c: "redskap for å lage struktur i maling" }, fasit: "c" },
+  { id: 6, spørsmål: "Er dette?", alternativer: { a: "sett for karding av ull", b: "sett for strigling av hest", c: "sett for å ta imot garnnøster" }, fasit: "a" },
+  { id: 7, spørsmål: "Er dette?", alternativer: { a: "horn for oppbevaring av gotteri til å ha med i krigen", b: "krutthorn", c: "et utgått bukkehorn" }, fasit: "b" },
+  { id: 8, spørsmål: "Hva er dette?", alternativer: { a: "en sekstant for navigering til sjøs", b: "en passer", c: "et instrument til å måle solhøyden" }, fasit: "a" },
 ];
 
 // Quiz 2 — Ordenes betydning (9 ord)

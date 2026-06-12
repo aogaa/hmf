@@ -65,10 +65,15 @@ a { color: var(--brun); }
 }
 
 .site-header .logos img {
-  height: 52px;
+  height: 56px;
   width: auto;
   object-fit: contain;
-  filter: brightness(0) invert(1);
+}
+/* HMF-logoen er et fargerikt ovalt emblem — gi den hvit bakgrunn så den løftes fram på mørk header */
+.site-header .logos img[alt="Holmestrand Museum"] {
+  background: #fff;
+  border-radius: 50%;
+  padding: 2px;
 }
 
 .site-header .site-title {
@@ -402,6 +407,66 @@ a { color: var(--brun); }
   align-items: center;
 }
 .quiz1-rad input { flex: 1; }
+
+/* Quiz 1 — flervalg */
+.mc-rad {
+  background: var(--beige);
+  border: 1.5px solid #d9c8a8;
+  border-radius: 6px;
+  padding: 1rem 1.2rem;
+  margin-bottom: 1.25rem;
+}
+.mc-spørsmål {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  color: var(--mørk);
+  font-size: 1.1rem;
+  margin-bottom: .75rem;
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+}
+.mc-spørsmål .nr {
+  background: var(--gull);
+  color: var(--mørk);
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+.mc-alternativer { display: flex; flex-direction: column; gap: .5rem; }
+.mc-alternativ {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  padding: .6rem .8rem;
+  background: #fffdf7;
+  border: 1.5px solid #d9c8a8;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+}
+.mc-alternativ:hover { border-color: var(--brun); }
+.mc-alternativ input[type="radio"] {
+  width: 20px; height: 20px;
+  accent-color: var(--brun);
+  flex-shrink: 0;
+}
+.mc-alternativ:has(input:checked) {
+  border-color: var(--brun);
+  background: #f3e7d4;
+}
+.mc-bokstav {
+  font-weight: 700;
+  color: var(--brun);
+  text-transform: uppercase;
+  min-width: 1.2rem;
+}
+.mc-tekst { color: var(--tekst); }
 
 .send-knapp-wrapper { margin-top: 2rem; text-align: center; }
 
