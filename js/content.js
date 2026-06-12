@@ -17,24 +17,25 @@ export const quiz1 = [
 
 // Quiz 2 — Ordenes betydning (9 ord)
 export const quiz2 = [
-  { id: 1, ord: "ORD_1", fasit: "BETYDNING_1" },
-  { id: 2, ord: "ORD_2", fasit: "BETYDNING_2" },
-  { id: 3, ord: "ORD_3", fasit: "BETYDNING_3" },
-  { id: 4, ord: "ORD_4", fasit: "BETYDNING_4" },
-  { id: 5, ord: "ORD_5", fasit: "BETYDNING_5" },
-  { id: 6, ord: "ORD_6", fasit: "BETYDNING_6" },
-  { id: 7, ord: "ORD_7", fasit: "BETYDNING_7" },
-  { id: 8, ord: "ORD_8", fasit: "BETYDNING_8" },
-  { id: 9, ord: "ORD_9", fasit: "BETYDNING_9" },
+  { id: 1, ord: "Børstebinder", fasit: "En som laget og reparerte børster, koster og pensler" },
+  { id: 2, ord: "Amtmann", fasit: "Øverste myndighet i et fylke – i dag heter det statsforvalter" },
+  { id: 3, ord: "Førselsbonde", fasit: "Bonde som var pliktig til å kjøre på oppdrag for andre" },
+  { id: 4, ord: "Grindvokter", fasit: "Person som hadde som jobb å åpne og lukke en grind, for eksempel ved jernbanekryssninger" },
+  { id: 5, ord: "Lokomotivpusser", fasit: "Person som hadde som yrke å rense og etterse lokomotiver" },
+  { id: 6, ord: "Vognkusk", fasit: "Person som førte hestevogner" },
+  { id: 7, ord: "Lasskjører", fasit: "Person som fraktet et lass med slede og vogn" },
+  { id: 8, ord: "Brolegger", fasit: "Person som la brostein på gater og torg" },
+  { id: 9, ord: "Bøkker", fasit: "Tønnemaker" },
 ];
 
-// Quiz 3 — Historiske spørsmål (5 spørsmål)
+// Quiz 3 — Historiske spørsmål (6 spørsmål)
 export const quiz3 = [
-  { id: 1, spørsmål: "SPØRSMÅL_1", fasit: "FASIT_1" },
-  { id: 2, spørsmål: "SPØRSMÅL_2", fasit: "FASIT_2" },
-  { id: 3, spørsmål: "SPØRSMÅL_3", fasit: "FASIT_3" },
-  { id: 4, spørsmål: "SPØRSMÅL_4", fasit: "FASIT_4" },
-  { id: 5, spørsmål: "SPØRSMÅL_5", fasit: "FASIT_5" },
+  { id: 1, spørsmål: "Når fikk Holmestrand bystatus?", fasit: "1752" },
+  { id: 2, spørsmål: "Hvilken stor bedrift gikk opp i flammer under bybrannen i 1884?", fasit: "Saga" },
+  { id: 3, spørsmål: "Hvilken forfatter var bosatt i Holmestrand og har 150 års jubileum i år?", fasit: "Olav Duun" },
+  { id: 4, spørsmål: "Hva var Nordisk sitt første administrasjonsbygg?", fasit: "Tårngården, kjøpt i 1921" },
+  { id: 5, spørsmål: "Hva heter den verdensberømte komponisten som har en statue foran biblioteket?", fasit: "Agathe Ursula Backer Grøndahl" },
+  { id: 6, spørsmål: "Hva er navnet på den planlagte nye videregående skolen i Holmestrand?", fasit: "Harriet Backer VGS" },
 ];
 
 // Premier som vises på forsiden
