@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <title>Svarskjema – Historiequiz 2026</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@400;700&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      font-size: 13pt;
+      color: #000;
+      background: #fff;
+    }
+
+    .ark {
+      width: 210mm;
+      min-height: 297mm;
+      padding: 18mm 18mm 14mm;
+      page-break-after: always;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Topptekst ── */
+    .topp {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2.5px solid #000;
+      padding-bottom: 8px;
+      margin-bottom: 14px;
+    }
+
+    .quiz-etikett {
+      font-family: 'Playfair Display', serif;
+      font-size: 9pt;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .arrangør {
+      font-size: 8pt;
+      text-align: right;
+      line-height: 1.5;
+    }
+
+    /* ── Tittel ── */
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22pt;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .undertittel {
+      font-size: 10pt;
+      color: #444;
+      margin-bottom: 18px;
+    }
+
+    /* ── Deltakerfelt ── */
+    .deltaker-felt {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 22px;
+    }
+
+    .felt {
+      flex: 1;
+    }
+
+    .felt label {
+      display: block;
+      font-size: 8.5pt;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .felt .linje {
+      border-bottom: 1.5px solid #000;
+      height: 22px;
+    }
+
+    /* ── Skillelinje ── */
+    .skillelinje {
+      border: none;
+      border-top: 1px solid #bbb;
+      margin-bottom: 18px;
+    }
+
+    /* ── Spørsmålsliste ── */
+    .sporsmal-liste {
+      flex: 1;
+    }
+
+    .sporsmal-rad {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .nummer {
+      font-family: 'Playfair Display', serif;
+      font-size: 15pt;
+      font-weight: 700;
+      min-width: 28px;
+      line-height: 1;
+      padding-top: 2px;
+    }
+
+    .sporsmal-innhold {
+      flex: 1;
+    }
+
+    .ord-tekst {
+      font-family: 'Playfair Display', serif;
+      font-size: 13pt;
+      font-style: italic;
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+
+    .sporsmal-tekst {
+      font-size: 11pt;
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+
+    .svar-linje {
+      border-bottom: 1.2px solid #000;
+      width: 100%;
+      height: 24px;
+      margin-bottom: 4px;
+    }
+
+    /* ── Bunn ── */
+    .bunn {
+      margin-top: auto;
+      padding-top: 12px;
+      border-top: 1px solid #bbb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 8pt;
+      color: #555;
+    }
+
+    /* ── Print ── */
+    @media print {
+      body { background: #fff; }
+      .ark { page-break-after: always; }
+      .ingen-print { display: none; }
+    }
+
+    /* ── Skjermvisning ── */
+    @media screen {
+      body { background: #e8e8e8; padding: 20px; }
+      .ark {
+        background: #fff;
+        box-shadow: 0 2px 12px rgba(0,0,0,.18);
+        margin: 0 auto 40px;
+      }
+      .ingen-print {
+        text-align: center;
+        margin-bottom: 24px;
+        font-family: 'Lato', sans-serif;
+      }
+      .ingen-print button {
+        padding: 10px 28px;
+        font-size: 14px;
+        font-family: 'Lato', sans-serif;
+        cursor: pointer;
+        border: 2px solid #000;
+        background: #000;
+        color: #fff;
+        border-radius: 3px;
+        letter-spacing: .05em;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="ingen-print">
+  <button onclick="window.print()">🖨 Skriv ut begge ark</button>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!--  ARK 1 — QUIZ 2: Ordenes betydning            -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="ark">
+
+  <div class="topp">
+    <div class="quiz-etikett">Historiequiz · 13. juni 2026 · Quiz 2 av 3</div>
+    <div class="arrangør">Holmestrand Museum &amp; Botne Historielag</div>
+  </div>
+
+  <h1>Ordenes betydning</h1>
+  <p class="undertittel">Hva betyr disse gamle ordene og uttrykkene fra Holmestrands historie?</p>
+
+  <div class="deltaker-felt">
+    <div class="felt">
+      <label>Navn</label>
+      <div class="linje"></div>
+    </div>
+    <div class="felt">
+      <label>E-post</label>
+      <div class="linje"></div>
+    </div>
+  </div>
+
+  <hr class="skillelinje">
+
+  <div class="sporsmal-liste">
+
+    <div class="sporsmal-rad">
+      <div class="nummer">1</div>
+      <div class="sporsmal-innhold">
+        <div class="ord-tekst">Børstebinder</div>
+        <div class="svar-linje"></div>
+      </div>
+    </div>
+
+    <div class="sporsmal-rad">
+      <div class="nummer">2</div>
+      <div class="sporsmal-innhold">
+        <div class="ord-tekst">Amtmann</div>
+        <div class="svar-linje"></div>
+      </div>
+    </div>
+
+    <div class="sporsmal-rad">
+      <div class="nummer">3</div>
+      <div class="sporsmal-innhold">
+        <div class="ord-tekst">Førselsbonde</div>
+        <div class="svar-linje"></div>
+      </div>
+    </div>
+
+    <div class="sporsmal-rad">
+      <div class="nummer">4</div>
+      <div class="sporsmal-innhold">
+        <div class="ord-tekst">Grindvokter</div>
+        <div class="svar-linje"></div>
+      </div>
+    </div>
+
+    <div class="sporsmal-rad">
+      <div class="nummer">5</div>
+      <div class="sporsmal-innhold">
+        <div class="ord-tekst">Lokomotivpusser</div>
+        <div class="svar-linje"></div>
+      </div>
+    </div>
+
+    <div class="sporsmal-rad">
+      <div class="nummer">6</div>
+      <div class="sporsmal-innhold">
+        <div class="ord-tekst">Vognkusk</div>
+        <div class="svar-linje"></div>
+      </div>
+    </div>
+
+    <div class="sporsmal-rad">
+      <div class="nummer">7</div>
+      <div class="sporsmal-innhold">
+        <div class="ord-tekst">Lasskjører</div>
+        <div class="svar-linje"></div>
+      </div>
+    </div>
+
+    <div class="sporsmal-rad">
+      <div class="nummer">8</div>
+      <div class="sporsmal-innhold">
+        <div class="ord-tekst">Brolegger</div>
+        <div class="svar-linje"></div>
+      </div>
+    </div>
+
+    <div class="sporsmal-rad">
+      <div class="nummer">9</div>
+      <div class="sporsmal-innhold">
+        <div class="ord-tekst">Bøkker</div>
+        <div class="svar-linje"></div>
+      </div>
+    </div>
+
+  </div><!-- /sporsmal-liste -->
+
+  <div class="bunn">
+<span>quiz.holmestrandmuseum.no</span>
+  </div>
+
+</div><!-- /ark 1 -->
+
+
+<!-- ══════════════════════════════════════════════ -->
+<!--  ARK 2 — QUIZ 3: Historiske spørsmål          -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="ark">
+
+  <div class="topp">
+    <div class="quiz-etikett">Historiequiz · 13. juni 2026 · Quiz 3 av 3</div>
+    <div class="arrangør">Holmestrand Museum &amp; Botne Historielag</div>
+  </div>
+
+  <h1>Historiske spørsmål</h1>
+  <p class="undertittel">Test kunnskapene dine med spørsmål om Holmestrands og Botnes rike fortid.</p>
+
+  <div class="deltaker-felt">
+    <div class="felt">
+      <label>Navn</label>
+      <div class="linje"></div>
+    </div>
+    <div class="felt">
+      <label>E-post</label>
+      <div class="linje"></div>
+    </div>
+  </div>
+
+  <hr class="skillelinje">
+
+  <div class="sporsmal-liste">
+
+    <div class="sporsmal-rad">
+      <div class="nummer">1</div>
+      <div class="sporsmal-innhold">
+        <div class="sporsmal-tekst">Når fikk Holmestrand bystatus?</div>
+        <div class="svar-linje"></div>
+      </div>
+    </div>
+
+    <div class="sporsmal-rad">
+      <div class="nummer">2</div>
+      <div class="sporsmal-innhold">
+        <div class="sporsmal-tekst">Hvilken stor bedrift ble reddet under bybrannen i 1884?</div>
+        <div class="svar-linje"></div>
+      </div>
+    </div>
+
+    <div class="sporsmal-rad">
+      <div class="nummer">3</div>
+      <div class="sporsmal-innhold">
+        <div class="sporsmal-tekst">Hvilken forfatter var bosatt i Holmestrand og har 150 års jubileum i år?</div>
+        <div class="svar-linje"></div>
+      </div>
+    </div>
+
+    <div class="sporsmal-rad">
+      <div class="nummer">4</div>
+      <div class="sporsmal-innhold">
+        <div class="sporsmal-tekst">Hva var Nordisk sitt første administrasjonsbygg?</div>
+        <div class="svar-linje"></div>
+      </div>
+    </div>
+
+    <div class="sporsmal-rad">
+      <div class="nummer">5</div>
+      <div class="sporsmal-innhold">
+        <div class="sporsmal-tekst">Hva heter den verdensberømte komponisten som har en statue foran biblioteket?</div>
+        <div class="svar-linje"></div>
+      </div>
+    </div>
+
+    <div class="sporsmal-rad">
+      <div class="nummer">6</div>
+      <div class="sporsmal-innhold">
+        <div class="sporsmal-tekst">Hva er navnet på den planlagte nye videregående skolen i Holmestrand?</div>
+        <div class="svar-linje"></div>
+      </div>
+    </div>
+
+  </div><!-- /sporsmal-liste -->
+
+  <div class="bunn">
+<span>quiz.holmestrandmuseum.no</span>
+  </div>
+
+</div><!-- /ark 2 -->
+
+</body>
+</html>

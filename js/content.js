@@ -38,7 +38,7 @@ export const quiz2 = [
 // Quiz 3 — Historiske spørsmål (6 spørsmål)
 export const quiz3 = [
   { id: 1, spørsmål: "Når fikk Holmestrand bystatus?", fasit: "1752" },
-  { id: 2, spørsmål: "Hvilken stor bedrift gikk opp i flammer under bybrannen i 1884?", fasit: "Saga" },
+  { id: 2, spørsmål: "Hvilken stor bedrift ble reddet under bybrannen i 1884?", fasit: "Saga" },
   { id: 3, spørsmål: "Hvilken forfatter var bosatt i Holmestrand og har 150 års jubileum i år?", fasit: "Olav Duun" },
   { id: 4, spørsmål: "Hva var Nordisk sitt første administrasjonsbygg?", fasit: "Tårngården, kjøpt i 1921" },
   { id: 5, spørsmål: "Hva heter den verdensberømte komponisten som har en statue foran biblioteket?", fasit: "Agathe Ursula Backer Grøndahl" },
