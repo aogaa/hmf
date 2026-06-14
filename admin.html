@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin — Historiequiz</title>
   <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <style>
     body { background: var(--cream); }
     .admin-header { background: var(--mørk); color: var(--gull-lys); padding: 1rem 1.5rem; display:flex; justify-content:space-between; align-items:center; }
@@ -60,7 +61,7 @@
       <div class="tab-panel aktiv" id="tab-svar">
         <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:1rem;align-items:center;">
           <button class="btn btn-sekundær" id="vurder-knapp" style="padding:.5rem 1.2rem;">Vurder alle svar automatisk</button>
-          <button class="btn" id="eksport-knapp" style="background:var(--beige);border:2px solid var(--gull);padding:.5rem 1.2rem;">Eksporter CSV</button>
+          <button class="btn" id="eksport-knapp" style="background:var(--beige);border:2px solid var(--gull);padding:.5rem 1.2rem;">Eksporter Excel</button>
           <label style="font-size:.9rem;color:var(--grå);">Filtrer quiz:
             <select id="quiz-filter" style="margin-left:.4rem;padding:.3rem .6rem;border:1px solid #c4a882;border-radius:3px;background:#fffdf7;">
               <option value="quiz1">Quiz 1 — Gjenstander</option>
@@ -110,7 +111,7 @@
   </div>
 
   <script type="module">
-    import { settOppAuth, loggInn, loggUt, hentAllData, vurderAlleSvar, beregnStats, trekkVinner, tellRiktige, eksporterCSV } from './js/admin.js';
+    import { settOppAuth, loggInn, loggUt, hentAllData, vurderAlleSvar, beregnStats, trekkVinner, tellRiktige, eksporterExcel } from './js/admin.js';
     import { quiz1, quiz2, quiz3 } from './js/content.js';
 
     const quizConfig = {
@@ -232,7 +233,7 @@
     });
 
     // Eksport
-    document.getElementById('eksport-knapp').addEventListener('click', () => eksporterCSV(alleDeltakere));
+    document.getElementById('eksport-knapp').addEventListener('click', () => eksporterExcel(alleDeltakere));
 
     // Trekning — vektet etter antall riktige svar (ett lodd per riktig svar)
     document.getElementById('trekk-knapp').addEventListener('click', () => {

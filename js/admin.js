@@ -131,27 +131,43 @@ export function trekkVinner(deltakere, vurderinger) {
   return loddkurv[Math.floor(Math.random() * loddkurv.length)];
 }
 
-// ── CSV-eksport ───────────────────────────────────────────────
-export function eksporterCSV(deltakere) {
-  const rader = [['ID', 'Navn', 'E-post', 'Tidspunkt', 'Quiz1', 'Quiz2', 'Quiz3']];
-  deltakere.forEach(d => {
-    rader.push([
-      d.id,
-      d.name,
-      d.email,
-      d.timestamp?.toDate?.().toISOString() || '',
-      d.svar?.quiz1 ? JSON.stringify(d.svar.quiz1) : '',
-      d.svar?.quiz2 ? JSON.stringify(d.svar.quiz2) : '',
-      d.svar?.quiz3 ? JSON.stringify(d.svar.quiz3) : '',
-    ]);
-  });
+// ── Excel-eksport (ett ark per quiz, fasit i toppraden) ────────
+const quizSpørsmål = {
+  quiz1: quiz1.map(q => q.spørsmål),
+  quiz2: quiz2.map(q => q.ord),
+  quiz3: quiz3.map(q => q.spørsmål),
+};
+const quizFasit = {
+  quiz1: quiz1.map(q => q.alternativer?.[q.fasit] ?? q.fasit),
+  quiz2: quiz2.map(q => q.fasit),
+  quiz3: quiz3.map(q => q.fasit),
+};
+const quizArknavn = { quiz1: 'Quiz 1', quiz2: 'Quiz 2', quiz3: 'Quiz 3' };
 
-  const csv = rader.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n');
-  const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `hmf-quiz-svar-${new Date().toISOString().slice(0,10)}.csv`;
-  a.click();
-  URL.revokeObjectURL(url);
+export function eksporterExcel(deltakere) {
+  const wb = XLSX.utils.book_new();
+
+  for (const quizKey of ['quiz1', 'quiz2', 'quiz3']) {
+    const spørsmål = quizSpørsmål[quizKey];
+    const fasit = quizFasit[quizKey];
+    const antall = spørsmål.length;
+
+    const header = ['Navn', 'E-post', ...spørsmål.map((s, i) => `Spm ${i+1}: ${s}`)];
+    const fasitRad = ['Fasit', '', ...fasit];
+
+    const rader = [header, fasitRad];
+
+    deltakere.forEach(d => {
+      const svarObj = d.svar?.[quizKey];
+      if (!svarObj) return;
+      const svar = Array.from({ length: antall }, (_, i) => svarObj[`q${i+1}`] || '');
+      rader.push([d.name, d.email, ...svar]);
+    });
+
+    const ws = XLSX.utils.aoa_to_sheet(rader);
+    ws['!cols'] = [{ wch: 22 }, { wch: 28 }, ...spørsmål.map(() => ({ wch: 28 }))];
+    XLSX.utils.book_append_sheet(wb, ws, quizArknavn[quizKey]);
+  }
+
+  XLSX.writeFile(wb, `hmf-quiz-svar-${new Date().toISOString().slice(0,10)}.xlsx`);
 }
